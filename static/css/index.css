@@ -1,0 +1,717 @@
+/* =========================================
+   1. CSS Variables & Theme Configuration
+   Based on the "Crown" Icon Palette
+   ========================================= */
+   :root {
+    /* Palette extracted from the Crown Icon */
+    --crown-gold: #f59e0b;       /* 皇冠主色 */
+    --crown-gold-dark: #b45309;  /* 皇冠深色阴影 */
+    --crown-red: #ef4444;        /* 宝石红 */
+    --crown-outline: #1f2937;    /* 轮廓深灰 */
+    
+    /* Semantic Colors */
+    --primary-color: var(--crown-gold);
+    --primary-hover: var(--crown-gold-dark);
+    --secondary-color: var(--crown-outline);
+    --accent-color: var(--crown-red);
+    
+    /* Backgrounds */
+    --bg-primary: #ffffff;
+    --bg-secondary: #fffbeb;     /* 极淡的暖金色背景，增加一种象牙白的高级感 */
+    --bg-tertiary: #f9fafb;      /* 冷灰白，用于对比 */
+    
+    /* Text */
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-light: #9b9b9b;
+    
+    /* UI Elements */
+    --border-radius: 10px;       /* 更圆润的边角 */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-glow: 0 0 15px rgba(245, 158, 11, 0.3); /* 金色光晕 */
+    
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* =========================================
+     2. Global Typography & Reset
+     ========================================= */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  a {
+    color: var(--crown-gold-dark);
+    transition: var(--transition);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: var(--crown-gold);
+  }
+  
+  /* =========================================
+     3. Hero Section (Title & Authors)
+     ========================================= */
+  .hero {
+    background: radial-gradient(circle at top center, var(--bg-secondary) 0%, #fff 70%);
+  }
+  
+  .publication-title {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+    font-size: 2.5rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1.5rem !important;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Add a subtle underline to the title key terms */
+  .publication-title u {
+    text-decoration: none;
+    /* background: linear-gradient(to right, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%); */
+    background: linear-gradient(to right, rgba(245, 158, 11, 0.8) 100%, rgba(245, 158, 11, 0.8) 100%);
+    background-position: 0 90%;
+    background-size: 100% 4px;
+    background-repeat: no-repeat;
+    padding-bottom: 4px;
+  }
+  
+  /* Author block styling */
+  .author-block {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .author-block a {
+    color: var(--secondary-color) !important;
+    border-bottom: 1px dashed var(--crown-gold);
+  }
+  
+  .author-block a:hover {
+    color: var(--crown-gold) !important;
+    border-bottom-style: solid;
+  }
+  
+  .is-size-5 {
+    font-size: 1.15rem !important; 
+  }
+  
+  /* Affiliations styling */
+  .publication-authors .author-block sup {
+    color: var(--crown-gold-dark);
+    font-weight: bold;
+  }
+  
+  /* =========================================
+     4. Buttons (The "Crown Jewels")
+     ========================================= */
+  .button.is-dark {
+    /* --- 核心改动：背景色 --- */
+    /* 之前是纯黑，现在改为 Slate-700 (深岩灰)，质感更高级，不刺眼 */
+    background-color: #334155 !important; 
+    
+    /* --- 核心改动：圆角 --- */
+    /* 之前是 50px，现在改为 10px，回归标准的圆角矩形 */
+    border-radius: 10px !important; 
+    
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important; /* 增加极细的内描边增加层次 */
+    padding: 1rem 1.25rem !important; /* 调整内边距适应新形状 */
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影也调淡一点 */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* 3. 悬停效果 (Hover) */
+  .button.is-dark:hover {
+    /* 悬停时变为主题色（皇冠金），不仅是变色，还有一个向上浮动的效果 */
+    background-color: var(--crown-gold) !important; 
+    border-color: var(--crown-gold) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    /* 悬停时增加金色光晕 */
+    box-shadow: 0 8px 15px rgba(245, 158, 11, 0.25); 
+  }
+  
+  /* 4. 修正图标间距 */
+  .button .icon {
+    margin-right: 6px !important;
+    font-size: 1.1em;
+  }
+  
+  .link-block {
+    margin: 4px;
+  }
+
+  /* =========================================
+   Subtitle Style 1: Modern Academic
+   ========================================= */
+.subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem !important; /* 稍微调小一点，区别于正文 */
+    color: var(--text-secondary) !important; /* 使用深灰色 */
+    line-height: 1.6 !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    max-width: 100%; /* 防止文字太宽，难以阅读 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* 专门针对 "Figure 1:" 这种粗体前缀进行高亮 */
+  .subtitle b, 
+  .subtitle strong {
+    color: var(--crown-gold-dark); /* 使用深琥珀色 */
+    font-weight: 700;
+    margin-right: 4px; /* 冒号后留一点空隙 */
+  }
+  
+  /* 针对 Teaser 视频下方的标题稍微大一点 */
+  .teaser .subtitle {
+    font-size: 1rem !important;
+    margin-top: 1rem;
+  }
+  
+  /* =========================================
+     5. Content Sections & Abstract
+     ========================================= */
+  /* Make the abstract stand out */
+  .hero.is-light {
+    background-color: var(--bg-tertiary);
+    border-top: 1px solid #f3f4f6;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+/* 1. 通用样式：适用于大多数标题 (左对齐 + 左侧竖线) */
+.title.is-3 {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
+    color: var(--text-primary);
+    margin-bottom: 2rem !important;
+    
+    /* 核心左对齐样式 */
+    text-align: left !important;
+    padding-left: 1rem;
+    border-left: 4px solid var(--crown-gold);
+    line-height: 1.2;
+  }
+  
+  /* 隐藏原本底部的横线 */
+  .title.is-3::after {
+    display: none !important;
+  }
+  
+/* =========================================
+   1. Abstract 特例：恢复居中 + 底部渐变横线
+   ========================================= */
+
+/* 父元素样式 */
+.title.is-3.is-centered-special {
+    text-align: center !important;    /* 强制回居中 */
+    padding-left: 0 !important;       /* 去掉左侧留白 */
+    border-left: none !important;     /* 去掉左侧竖线 */
+    
+    /* [新增] 必须设置为相对定位，否则 after 伪元素会乱跑 */
+    position: relative !important;    
+    /* [新增] 底部留出空间给横线，否则线会压在字上 */
+    padding-bottom: 10px !important;  
+  }
+  
+  /* 伪元素样式（横线） */
+  .title.is-3.is-centered-special::after {
+    /* [关键修复] 必须显式覆盖之前的 display: none !important */
+    display: block !important;       
+    
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    
+    /* 金色渐变 */
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--crown-gold) 50%, rgba(255,255,255,0) 100%);
+    opacity: 0.8;
+  }
+  
+  .content.has-text-justified {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+  }
+  
+  /* Strong text highlights */
+  .content b, .content strong {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  /* Feature Cards Styling */
+.feature-card {
+    background: #ffffff;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    height: 100%; /* 确保卡片高度一致 */
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* 顶部增加一条金色的装饰线，呼应皇冠主题 */
+  .feature-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--crown-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  
+  /* .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  } */
+  
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+  
+  /* 图标容器：淡金色背景 */
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(245, 158, 11, 0.1); /* --crown-gold with opacity */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    transition: var(--transition);
+  }
+  
+  .feature-icon i {
+    font-size: 1.5rem;
+    color: var(--crown-gold-dark);
+  }
+  
+  .feature-card:hover .feature-icon {
+    background: var(--crown-gold);
+    transform: rotate(-10deg);
+  }
+  
+  .feature-card:hover .feature-icon i {
+    color: #fff;
+  }
+  
+  /* 标题样式 */
+  .feature-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  
+  /* 文本样式 */
+  .feature-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex-grow: 1; /* 让文本占据剩余空间 */
+  }
+  
+  .feature-text strong {
+    color: var(--crown-gold-dark); /* 强调文字使用深金色 */
+    font-weight: 600;
+  }
+  
+  /* =========================================
+     6. Images, Video & Figures
+     ========================================= */
+  /* Refined borders for media */
+  video, img, .publication-banner {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,0.05);
+    background: white;
+  }
+  
+  /* Caption summaries styling */
+  .caption-details {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+    border: 1px solid #fcd34d; /* Light gold border */
+    text-align: left;
+    font-size: 0.95rem;
+  }
+  
+  .caption-summary {
+    cursor: pointer;
+    color: var(--crown-gold-dark);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .caption-full-text {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(245, 158, 11, 0.3);
+    color: var(--text-secondary);
+  }
+
+  /* =========================================
+   Interactive Caption / Details Styling
+   Theme: DiaDem (Gold & Elegant)
+   ========================================= */
+
+/* 1. 容器：卡片式设计 */
+.caption-details {
+    background: var(--bg-primary);
+    border: 1px solid rgba(0, 0, 0, 0.08); /* 极细的边框 */
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    margin: 2rem auto;
+    overflow: hidden; /* 确保圆角不被内部内容溢出遮挡 */
+    transition: var(--transition);
+    position: relative;
+  }
+  
+  /* 悬停时容器整体轻微上浮 */
+  .caption-details:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(245, 158, 11, 0.3); /* 悬停时显现淡淡的金色边框 */
+  }
+  
+  /* 展开状态下，增加左侧金色装饰条，强调当前处于阅读模式 */
+  .caption-details[open] {
+    box-shadow: var(--shadow-lg);
+    border-left: 4px solid var(--crown-gold);
+  }
+  
+  /* 2. Summary 头部交互区 */
+  .caption-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    list-style: none; /* 移除默认三角形 */
+    background: linear-gradient(to right, var(--bg-secondary) 50%, #fff 100%);
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* 移除浏览器默认的 marker (兼容性处理) */
+  .caption-summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .caption-summary:hover {
+    background: #fff8e1; /* 极浅的金色背景 hover */
+  }
+  
+  /* 3. Summary 内部文字排版 */
+  .summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    text-align: left; /* 强制左对齐，避免继承父级居中 */
+    flex: 1; /* 占据剩余空间 */
+    padding-right: 1.5rem;
+  }
+  
+  .summary-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--crown-gold-dark);
+    font-size: 1rem;
+    text-transform: none;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* 添加一个小图标装饰在标题前 */
+  .summary-title::before {
+    content: '➤'; /* FontAwesome 对应 Hand Pointer 的编码 */
+    font-family: 'Font Awesome 5 Free'; /* 指定字体库 */
+    font-weight: bold; /* Solid 风格需要加粗 */
+    font-size: 1.1em;
+    color: var(--crown-gold); /* 默认使用金色，不再是灰色 */
+    opacity: 0.7;
+    transition: var(--transition);
+    margin-right: 4px;
+    transform: rotate(-15deg); /* 稍微倾斜一点，更有点击的感觉 */
+  }
+  
+  /* 交互状态：悬停或展开时，图标变深并摆正 */
+  .caption-details[open] .summary-title::before,
+  .caption-summary:hover .summary-title::before {
+    opacity: 1;
+    color: var(--crown-gold-dark);
+    transform: rotate(0deg) scale(1.1); /* 产生一个轻微的按压/放大效果 */
+  }
+  
+  .summary-excerpt {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-style: italic;
+    
+    /* --- 核心修改 --- */
+    white-space: normal;          /* 允许文本换行 */
+    line-height: 1.5;             /* 增加行高，提升多行阅读体验 */
+    max-width: 100%;              /* 充分利用容器宽度 */
+  }
+  
+  /* 4. 旋转箭头图标 (纯CSS绘制) */
+  .summary-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 箭头形状 */
+  .summary-icon::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--text-secondary);
+    border-bottom: 2px solid var(--text-secondary);
+    transform: rotate(45deg) translate(-1px, -1px);
+    transition: var(--transition);
+  }
+  
+  /* 悬停时图标变色 */
+  .caption-summary:hover .summary-icon {
+    background: var(--crown-gold);
+  }
+  
+  .caption-summary:hover .summary-icon::after {
+    border-color: #fff;
+  }
+  
+  /* 展开状态：图标旋转 */
+  .caption-details[open] .summary-icon {
+    background: var(--crown-gold-dark);
+    transform: rotate(180deg);
+  }
+  
+  .caption-details[open] .summary-icon::after {
+    border-color: #fff;
+  }
+  
+  /* 5. 展开后的完整内容 */
+  .caption-full-text {
+    padding: 1.5rem;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+    background-color: #fff;
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: justify;
+    animation: slideDown 0.4s ease-out; /* 展开动画 */
+  }
+  
+  /* 强调完整Caption中的关键词 */
+  .caption-full-text span {
+    background: linear-gradient(120deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.15) 0%);
+    padding: 0.1em 0.3em;
+    border-radius: 4px;
+    box-decoration-break: clone;
+  }
+  
+  /* 简单的展开动画关键帧 */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* 移动端适配 */
+  @media screen and (max-width: 768px) {
+    .summary-excerpt {
+      display: none; /* 手机端隐藏摘要，节省空间 */
+    }
+    
+    .caption-summary {
+      padding: 1rem;
+    }
+  }
+  
+  /* =========================================
+     7. Carousel & Results
+     ========================================= */
+  .results-carousel .item {
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin: 10px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #f3f4f6;
+    transition: var(--transition);
+  }
+  
+  .results-carousel .item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--crown-gold); /* Hover border gold */
+  }
+  
+  /* =========================================
+     8. BibTeX Code Block
+     ========================================= */
+  pre {
+    background-color: #334155 !important; /* Dark theme code block */
+    border-radius: var(--border-radius) !important;
+    color: #e5e7eb !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative;
+  }
+  
+  code {
+    background-color: transparent !important;
+    color: #fbbf24 !important; /* Code text in soft gold */
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .bibtex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Copy Button Styling */
+  .copy-bibtex-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--crown-gold);
+    color: var(--crown-gold-dark);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .copy-bibtex-btn:hover {
+    background: var(--crown-gold);
+    color: white;
+  }
+  
+  /* =========================================
+     9. Footer
+     ========================================= */
+  .footer {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 3rem 1.5rem;
+  }
+  
+  .footer a {
+    color: var(--crown-gold-dark);
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+    color: var(--crown-gold);
+  }
+  
+  /* =========================================
+     10. Scroll to Top Button
+     ========================================= */
+  .scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background-color: var(--crown-gold) !important;
+    color: white !important;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-lg);
+    /* box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); */
+  }
+  
+  .scroll-to-top:hover {
+    background-color: var(--crown-gold-dark) !important;
+    transform: translateY(-3px);
+    box-shadow: var (--shadow-xl);
+  }
+
+  .scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+/* =========================================
+   Fix: Title Icon Reset
+   保持标题图标的原生显示效果，覆盖全局图片样式
+   ========================================= */
+   img.title-icon {
+    /* 1. 重置全局图片样式 (去除卡片效果) */
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    
+    /* 2. 禁用鼠标悬停效果 (防止图标放大) */
+    transform: none !important; 
+    
+    /* 3. 保持与文字的完美对齐 (根据原版微调) */
+    height: 1.1em !important;      /* 随字体大小自动调整高度 */
+    width: auto !important;        /* 保持比例 */
+    vertical-align: middle;        /* 垂直居中对齐 */
+    margin-right: 0.25em;          /* 右侧留一点空隙 */
+    margin-bottom: 0.2em;          /* 稍微上提一点以视觉居中 */
+    display: inline-block;
+  }

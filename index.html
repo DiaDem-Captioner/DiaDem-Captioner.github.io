@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="DiaDem: Advancing Dialogue Descriptions in Audiovisual Video Captioning for Multimodal Large Language Models">
+  <meta name="description" content="We propose DiaDem, an audiovisual captioning model capable of generating captions with precise dialogue descriptions, and introduce DiaDemBench, a benchmark for evaluating speaker attribution and utterance transcription fidelity in audiovisual captions.">
+  <meta name="keywords" content="diadem, diadembench, audiovisual, caption, dialogue description, speaker attribution, utterance transcription, captioner">
+  <meta name="author" content="Xinlong Chen, Weihong Lin, Jingyun Hua, Linli Yao, Yue Ding, Bozhou Li, Bohan Zeng, Yang Shi, Qiang Liu, Yuanxing Zhang, Pengfei Wan, Liang Wang, Tieniu Tan">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Kling Team, Kuaishou Technology">
+  <meta property="og:title" content="DiaDem: Advancing Dialogue Descriptions in Audiovisual Video Captioning for Multimodal Large Language Models">
+  <meta property="og:description" content="We propose DiaDem, an audiovisual captioning model capable of generating captions with precise dialogue descriptions, and introduce DiaDemBench, a benchmark for evaluating speaker attribution and utterance transcription fidelity in audiovisual captions.">
+  <meta property="og:url" content="https://diadem-captioner.github.io/">
+  <meta property="article:author" content="Xinlong Chen">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="diadem">
+  <meta property="article:tag" content="diadembench">
+  <meta property="article:tag" content="audiovisual">
+  <meta property="article:tag" content="caption">
+  <meta property="article:tag" content="dialogue description">
+  <meta property="article:tag" content="speaker attribution">
+  <meta property="article:tag" content="utterance transcription">
+  <meta property="article:tag" content="captioner">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>DiaDem: Advancing Dialogue Descriptions in Audiovisual Video Captioning for Multimodal Large Language Models - Xinlong Chen, Weihong Lin, Jingyun Hua, Linli Yao, Yue Ding, Bozhou Li, Bohan Zeng, Yang Shi, Qiang Liu, Yuanxing Zhang, Pengfei Wan, Liang Wang, Tieniu Tan</title>
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/diadem.ico">
+  <link rel="apple-touch-icon" href="static/images/diadem.ico">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <!-- <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works from Our Lab</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Paper Title 1</h5>
+            <p>Brief description of the work and its main contribution.</p>
+            <span class="work-venue">Conference/Journal 2024</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://arxiv.org/abs/PAPER_ID_2" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Paper Title 2</h5>
+            <p>Brief description of the work and its main contribution.</p>
+            <span class="work-venue">Conference/Journal 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://arxiv.org/abs/PAPER_ID_3" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Paper Title 3</h5>
+            <p>Brief description of the work and its main contribution.</p>
+            <span class="work-venue">Conference/Journal 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div> -->
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><img src="static/images/diadem.ico" alt="DiaDem icon" class="title-icon">DiaDem: Advancing <u>Dia</u>logue <u>De</u>scriptions in Audiovisual Video Captioning for Multi<u>m</u>odal Large Language Models</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Xinlong Chen<sup>1,2,3*</sup>,</span>
+                <span class="author-block">
+                  Weihong Lin<sup>3</sup>,</span>
+                  <span class="author-block">
+                    Jingyun Hua<sup>3</sup>,</span>
+                    <span class="author-block">
+                      Linli Yao<sup>4</sup>,</span><br>
+                      <span class="author-block">
+                        Yue Ding<sup>1,2</sup>,</span>
+                        <span class="author-block">
+                          Bozhou Li<sup>4</sup>,</span>
+                          <span class="author-block">
+                            Bohan Zeng<sup>4</sup>,</span>
+                            <span class="author-block">
+                              Yang Shi<sup>4</sup>,</span><br>
+                              <span class="author-block">
+                                Qiang Liu<sup>1,2†</sup>,</span>
+                                <span class="author-block">
+                                  Yuanxing Zhang<sup>3</sup>,</span>
+                                  <span class="author-block">
+                                    Pengfei Wan<sup>3</sup>,</span>
+                                    <span class="author-block">
+                                      Liang Wang<sup>1,2</sup>,</span>
+                                      <span class="author-block">
+                                        Tieniu Tan<sup>1,2,5</sup>
+                  </span>
+                  </div>
+
+                  <div class="is-size-6 publication-authors" style="margin-top: 16px;">
+                    <span class="author-block"><sup>1</sup>New Laboratory of Pattern Recognition, Institute of Automation, Chinese Academy of Sciences<br><sup>2</sup>School of Artificial Intelligence, University of Chinese Academy of Sciences<br><sup>3</sup>Kling Team, Kuaishou Technology&nbsp;&nbsp;&nbsp;&nbsp;<sup>4</sup>Peking University&nbsp;&nbsp;&nbsp;&nbsp;<sup>5</sup>Nanjing University
+                    </span>
+                    <span class="eql-cntrb"><small><br><sup>*</sup>This work was conducted during the author's internship at Kling Team, Kuaishou Technology</small></span>
+                    <span class="eql-cntrb"><small><br><sup>†</sup>Corresponding author: <a href="mailto:qiang.liu@nlpr.ia.ac.cn">qiang.liu@nlpr.ia.ac.cn</a></small></span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                    <!-- TODO: Update with your arXiv paper ID -->
+                    <span class="link-block">
+                      <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                      </span>
+                      <span>arXiv</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a href="https://github.com/DiaDem-Captioner/DiaDem" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a href="https://huggingface.co/DiaDem-Captioner/DiaDem" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <p style="font-size:18px">🤗</p>
+                        </span>
+                        <span>Model</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a href="https://huggingface.co/DiaDem-Captioner/DiaDemBench" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <p style="font-size:18px">🤗</p>
+                        </span>
+                        <span>Benchmark</span>
+                      </a>
+                    </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 is-centered-special">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Accurate dialogue description is a critical yet underexplored aspect of audiovisual video captioning, with profound implications for downstream multimodal understanding and generation tasks. Despite the rapid progress in MLLMs, existing approaches often struggle to faithfully capture <i>who says what</i> in complex audiovisual scenes. To mitigate this limitation, we propose <b>DiaDem</b>, a powerful audiovisual video captioning model capable of generating captions with more precise dialogue descriptions, while maintaining strong overall captioning performance across general audiovisual content.<br>
+
+            To enable systematic evaluation of dialogue description capabilities, we further introduce <b>DiaDemBench</b>, a comprehensive benchmark designed to evaluate models across diverse dialogue scenarios, emphasizing both speaker attribution accuracy and utterance transcription fidelity in audiovisual captions. Extensive experiments on DiaDemBench reveal that even commercial models still exhibit substantial room for improvement in dialogue-aware captioning. Notably, DiaDem not only outperforms the Gemini series in dialogue description accuracy but also achieves competitive performance on general audiovisual captioning benchmarks, demonstrating its overall effectiveness.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video poster="" id="tree" controls muted loop height="100%" preload="metadata">
+        <source src="static/images/case_1.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <details class="caption-details">
+          <summary class="caption-summary">
+            <div class="summary-content">
+              <span class="summary-title">Click to view the full generated caption</span>
+              <span class="summary-excerpt">...The background is a brightly lit room with a window covered by blinds. The woman speaks in a gentle, slightly hopeful tone, "Yeah. I thought maybe a change of scenery would cheer him up."...</span>
+            </div>
+            <div class="summary-icon"></div>
+          </summary>
+          <div class="caption-full-text">
+            <p><span style="font-weight: bold;">
+              Full caption:<br></p>
+              A medium close-up shot from behind a glass terrarium shows a woman with wavy, shoulder-length blonde hair. She looks down into the enclosure with a gentle, slightly smiling expression. Inside the terrarium, which appears to be a repurposed aquarium, there is a piece of driftwood, some small green plants, and two strange, spider-like objects made of what looks like matchsticks or sticks. The background is a brightly lit room with a window covered by blinds. The woman speaks in a gentle, slightly hopeful tone, "Yeah. I thought maybe a change of scenery would cheer him up." The camera cuts to a medium shot of a man standing in a kitchen. He has short brown hair and is dressed in a blue t-shirt under an unbuttoned blue and white plaid shirt. He looks off-screen with a serious, slightly skeptical expression. The kitchen features white cabinets, a granite countertop, and a stainless steel refrigerator adorned with magnets. The man replies with dry sarcasm, "Maybe he would enjoy Bangkok." The view returns to the woman and a younger girl with blonde hair peeking over the top of the glass terrarium. The woman maintains a pleasant expression, while the younger girl looks on with a curious and slightly wide-eyed look. The younger girl interjects with a tone of curious surprise, "Is that Ramona's ball creature?" The final shot is a medium shot of the man in the kitchen. He now looks directly at the camera with a deadpan, unimpressed expression, his hands resting near his waist. The kitchen setting remains the same, with the refrigerator and cabinets visible behind him. The younger girl adds with a flat, unimpressed tone, "Cool."
+    </details>
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+
+<!-- SFT Data Curation -->
+<section class="hero teaser is-light">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered">
+      <h2 class="title is-3">Data Annotation Pipeline for Training DiaDem</h2>
+      <figure class="tight-figure">
+        <img src="static/images/sft_grpo_data_curation.jpg" alt="SFT Data Curation" style="max-width: 100%; height: auto;">
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <b>Figure 1:</b> Leveraging the complementary strengths of different models, we design a dedicated pipeline to construct a high-quality audiovisual caption corpus featuring precise dialogue descriptions for SFT, equipping the model with foundational dialogue description skills while maintaining its general captioning performance.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End SFT Data Curation -->
+
+
+<!-- Key Features of DiaDemBench -->
+<!-- <section class="section">
+  <div class="container">
+
+    <h2 class="title is-3 has-text-centered">
+      Key Features of DiaDemBench
+    </h2>
+
+    <div class="content has-text-justified">
+      <ul>
+        <li>
+          <strong>First-of-its-Kind Benchmark:</strong>
+          The first dedicated benchmark to evaluate the accuracy of dialogue descriptions in audiovisual video captioning, focusing on both <em>correct speaker attribution</em> and <em>precise utterance transcription</em>.
+        </li>
+
+        <li>
+          <strong>Robust Evaluation Protocol:</strong>
+          A principled evaluation framework consisting of ASR (utterance transcription accuracy) and REF (speaker reference accuracy) scores, incorporating a novel adaptive merging strategy for dialogue tuple matching and an MLLM-based judge for verifying speaker consistency.
+        </li>
+
+        <li>
+          <strong>High-Quality Annotation:</strong>
+          A hybrid annotation pipeline in which initial dialogue descriptions are generated using
+          Gemini-2.5-Pro, followed by meticulous manual refinement to ensure accurate utterance transcriptions and reliable speaker attribution.
+        </li>
+
+        <li>
+          <strong>Comprehensive and Diverse Scenarios:</strong>
+          A collection of 1,039 videos covering a wide spectrum of dialogue-centric scenarios, with broad category coverage and balanced distributions, enabling robust and generalizable evaluation.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section> -->
+<!-- End Key Features of DiaDemBench -->
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <h2 class="title is-3 has-text-centered">
+      Key Features of DiaDemBench
+    </h2>
+    
+    <div class="columns is-multiline">
+      <!-- TODO 具体内容待修改 -->
+      
+      <!-- Feature 1: Benchmark -->
+      <div class="column is-6">
+        <div class="feature-card">
+          <!-- <div class="feature-icon">
+            <i class="fas fa-trophy"></i>
+          </div> -->
+          <h3 class="feature-title">First-of-its-Kind Benchmark</h3>
+          <p class="feature-text">
+            The first dedicated benchmark to evaluate the accuracy of dialogue descriptions in audiovisual video captioning, focusing on both <strong>correct speaker attribution</strong> and <strong>precise utterance transcription</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 2: Protocol -->
+      <div class="column is-6">
+        <div class="feature-card">
+          <!-- <div class="feature-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div> -->
+          <h3 class="feature-title">Robust Evaluation Protocol</h3>
+          <p class="feature-text">
+            A principled evaluation framework consisting of <strong>ASR</strong> (utterance transcription accuracy) and <strong>REF</strong> (speaker reference accuracy) scores, incorporating a novel <strong>adaptive merging strategy</strong> for dialogue tuple matching and an MLLM-based judge for verifying speaker consistency.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 3: Annotation -->
+      <div class="column is-6">
+        <div class="feature-card">
+          <!-- <div class="feature-icon">
+            <i class="fas fa-file-signature"></i>
+          </div> -->
+          <h3 class="feature-title">High-Quality Annotation</h3>
+          <p class="feature-text">
+          A hybrid annotation pipeline in which initial dialogue descriptions are generated using
+          Gemini-2.5-Pro, followed by <strong>meticulous manual refinement</strong> to ensure accurate utterance transcriptions and reliable speaker attribution.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 4: Scenarios -->
+      <div class="column is-6">
+        <div class="feature-card">
+          <!-- <div class="feature-icon">
+            <i class="fas fa-film"></i>
+          </div> -->
+          <h3 class="feature-title">Comprehensive and Diverse Scenarios</h3>
+          <p class="feature-text">
+            A collection of <strong>1,039 videos covering a wide spectrum of dialogue-centric scenarios</strong>, with broad category coverage and balanced distributions, enabling robust and generalizable evaluation.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SFT Data Statistics -->
+<section class="hero teaser is-light">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered">
+      <h2 class="title is-3">Data Statistics of DiaDemBench</h2>
+      <figure class="tight-figure">
+        <img src="static/images/statistics.jpg" alt="SFT Data Statistics" style="max-width: 80%; height: auto;">
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <b>Figure 2:</b> DiaDemBench features relatively balanced distribution of speaker count, on-screen people count, video duration, and language diversity, while carefully modulating the difficulty of speaker attribution and utterance transcription.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End SFT Data Statistics -->
+
+
+<!-- Challenging Categories -->
+<section class="hero teaser is-light">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered">
+      <h2 class="title is-3">Challenging Categories of DiaDemBench</h2>
+      <figure class="tight-figure">
+        <img src="static/images/challenging_cases.jpg" alt="Challenging Categories" style="max-width: 100%; height: auto;">
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <b>Figure 3:</b> We showcase four representative dialogue scenarios from DiaDemBench that remain challenging for existing state-of-the-art audiovisual video captioning models to produce accurate dialogue descriptions, with the aim of providing insights for future advancements in audiovisual captioning.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End Challenging Categories -->
+
+
+<!-- Evaluation Results on DiaDemBench -->
+<section class="hero teaser is-light">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered">
+      <h2 class="title is-3">Evaluation Results on DiaDemBench</h2>
+      <figure class="tight-figure">
+        <img src="static/images/DiaDemBench_results.jpg" alt="Evaluation Results on DiaDemBench" style="max-width: 100%; height: auto;">
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <b>Table 1:</b> Model performance on DiaDemBench. \(N\) denotes the speaker count. "Overlap" refers to subsets with temporally overlapping speech and is mutually exclusive with the groups defined by speaker count \(N\). <sup>*</sup>For ARC-Qwen-Video-Narrator, speaker and utterance information appears only in the thinking phase rather than the final answer, thus we use the thinking content as the model's output for evaluation.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End Evaluation Results on DiaDemBench -->
+
+
+<!-- Evaluation Results on General Captioning -->
+<section class="hero teaser is-light">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered">
+      <h2 class="title is-3">Evaluation of DiaDem on General Audiovisual Captioning Benchmarks</h2>
+      <figure class="tight-figure">
+        <img src="static/images/general_results.jpg" alt="Evaluation Results on General Captioning" style="max-width: 80%; height: auto;">
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <b>Table 2:</b> Model performance on general audiovisual video captioning benchmarks. Following AVoCaDO, we replace the judge model for the video-SALMONN-2 testset with GPT-4.1 to ensure more reliable evaluation.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End Evaluation Results on General Captioning -->
+
+
+<!-- Ablation Studies-->
+<section class="hero is-small is-light">
+  <div class="hero-body has-text-centered">
+    <div class="container">
+      <h2 class="title is-3">Ablation Studies</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <img src="static/images/training_pipeline_abla.jpg" alt="Ablation studies" loading="lazy" style="max-width: 60%; height: auto;"/>
+        <h2 class="subtitle has-text-centered">
+          <b>Table 3:</b> Ablation study on our post-training pipeline.
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/new_dialogue_reward_abla.jpg" alt="Ablation studies" loading="lazy" style="max-width: 60%; height: auto;"/>
+        <h2 class="subtitle has-text-centered">
+          <b>Table 4:</b> Ablation on our enhanced dialogue reward.
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/judge_abla.jpg" alt="Ablation studies" loading="lazy" style="max-width: 60%; height: auto;"/>
+        <h2 class="subtitle has-text-centered">
+          <b>Table 5:</b> Ablation study on the judge model. <sup>*</sup>In main experiments, we use Gemini-2.5-Pro for dialogue extraction and Gemini-2.5-Flash for speaker accuracy evaluation to balance cost and accuracy.
+       </h2>
+     </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- End Ablation Studies -->
+
+
+<!-- Case studies -->
+<section class="hero is-small">
+  <div class="hero-body has-text-centered">
+    <div class="container">
+      <h2 class="title is-3">Additional Cases</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <img src="static/images/case_2.jpg" alt="case_2" loading="lazy" style="max-width: 80%; height: auto;"/>
+        <h2 class="subtitle has-text-centered">
+          <b>Figure 3:</b> An illustration of an audiovisual video caption with accurate dialogue descriptions generated by DiaDem, featuring both <b>correct speaker attribution</b> and <i>precise utterance transcription</i>, as well as other <u>general audiovisual details</u>.
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/case_3.jpg" alt="case_3" loading="lazy" style="max-width: 60%; height: auto;"/>
+        <h2 class="subtitle has-text-centered">
+          <b>Figure 4:</b> Qualitative comparison of DiaDem against two strong Gemini series models: Gemini-2.5-Pro and Gemini-3-Pro. Dialogue descriptions in the audiovisual captions are <u>underlined</u>, and circled indices indicate correspondence with the respective ground-truth dialogues, aiding in the identification of omissions.
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/case_4.jpg" alt="case_4" loading="lazy" style="max-width: 60%; height: auto;"/>
+        <h2 class="subtitle has-text-centered">
+          <b>Figure 5:</b> Qualitative comparison of DiaDem against two strong Gemini series models: Gemini-2.5-Pro and Gemini-3-Pro. Dialogue descriptions in the audiovisual captions are <u>underlined</u>, and circled indices indicate correspondence with the respective ground-truth dialogues.
+       </h2>
+     </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- End case studies -->
+
+
+<!-- Paper poster -->
+<!-- <section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title">Poster</h2>
+
+      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
+          </iframe>
+        
+      </div>
+    </div>
+  </section> -->
+<!--End paper poster -->
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>TODO</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <div style="text-align: center;">
+            <a href="https://clustrmaps.com/site/1c92u"  title="ClustrMaps"><img src="//www.clustrmaps.com/map_v2.png?d=fj0P_0PrLc5Sr7g_7VKeBnldxOMgBpFdC06D6XyhJt8&cl=ffffff" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  </body>
+  </html>
